@@ -1,7 +1,7 @@
 /* SLIGHTBOX */
 /* variation on SLIMBOX */
 
-#lbOverlay {
+#rglbOverlay {
 	position: absolute;
 	left: 0;
 	width: 100%;
@@ -10,7 +10,7 @@
 	z-index: 15;
 }
 
-#lbCenter, #lbBottom {
+#rglbCenter, #rglbBottom {
 	position: absolute;
 	left: 50%;
 	overflow: hidden;
@@ -19,21 +19,21 @@
 	border: 1px solid #006699;
 }
 
-#lbCenter {
+#rglbCenter {
 	padding: 10px;
 }
 
-.lbLoading {
+.rglbLoading {
 	background: #012138 url('img/loading-bar-black2.gif') no-repeat center;
 	border: 1px solid #666;
 }
 
-#lbImage {
+#rglbImage {
 	z-index: 25;
 }
 
 
-#lbPrevLink, #lbNextLink {
+#rglbPrevLink, #rglbNextLink {
 	position: absolute;
 	cursor: pointer;
 	background: tranparent;
@@ -44,9 +44,9 @@
 
 
 
-#lbPrevLink
+#rglbPrevLink
 {
-	Xborder:1px solid red;
+
 	bottom:10px;
 right:40px;
 	margin: 5px;
@@ -58,18 +58,18 @@ right:40px;
 
 
 
-#lbNextLink {
+#rglbNextLink {
 	right: 20px;
 	bottom:10px;
 	margin: 5px;
 	height: 13px;
 	width: 13px;
 	background: url('img/right.gif') no-repeat bottom right;
-Xborder:1px solid blue;
+
 }
 
 
-#lbBottom {
+#rglbBottom {
 	font-family: Verdana, Helvetica, sans-serif;
 	font-size: 10px;
 	line-height: 1.4em;
@@ -79,7 +79,7 @@ Xborder:1px solid blue;
 	border-top-style: none;
 }
 
-#lbCloseLink {
+#rglbCloseLink {
 	display: block;
 	float: right;
 	width: 13px;
@@ -88,37 +88,37 @@ Xborder:1px solid blue;
 	margin-top: 5px;
 }
 
-#lbNumber {
+#rglbNumber {
 	display: block;
 	float: left;color:#999;
 }
 
-#lbNumber.gallery {
+#rglbNumber.gallery {
 	display: block;
 	float: left;
 	padding: 10px;
 }
 
-#lbCaption {
+#rglbCaption {
 	margin-left: 10px;
 	display: block;
 	float: left;
 
 }
 
-#lbDescription {
+#rglbDescription {
 	float: left;
 	padding-right: 10px;
 }
 
-#lbDescription #lbTitle {
+#rglbDescription #rglbTitle {
 	float: left;
 	clear: both;
 	font-weight: bold;
 color:#999;
 }
 
-#lbDescription #lbCaption {
+#rglbDescription #rglbCaption {
 	margin-left: 0;
 color:#999;
 }

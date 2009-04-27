@@ -99,6 +99,17 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase {
 			if (!$this->config['widthGallery']) $this->config['widthGallery'] = $this->config['width'];      
 		}
 		
+		// check starting point for missing slash
+		if (substr($this->config['startingpoint'], -1) != '/') {
+			$this->config['startingpoint'] = $this->config['startingpoint'].'/';
+		}
+
+		if (substr($this->config['startingpoint'], 0,1) == '/') {
+			$size = strlen($this->config['startingpoint']);
+			$this->config['startingpoint'] = substr($this->config['startingpoint'],1,$size-1);
+		}
+
+		
 		/*
 		 * Advanced settings
 		 */
@@ -124,7 +135,8 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase {
 		$tmp_confArr = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rgsmoothgallery'] );
 		$tmp_confArr['splitRecord'] = ($tmp_confArr['splitRecord']) ? $tmp_confArr['splitRecord'] : '\n';
 		$this->config['splitRecord'] = ($tmp_confArr['splitRecord'] == '\n') ? "\n" : $tmp_confArr['splitRecord'];
-		$this->config['splitComment'] = $tmp_confArr['splitComment'];
+ 
+		$this->config['splitComment'] = ($tmp_confArr['splitComment']) ? $tmp_confArr['splitComment'] : '|';
 		
 		/*
 		 * StdWrap options for every value from flexforms merged with TS to override it again with TS and to manipulate it with stdWrap things
@@ -449,7 +461,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase {
 			$content.=$this->addImage(
 				$path,
 				$row['title'], 
-				$row['description'], 
+				nl2br($row['description']), 
 				$this->config['showThumbs'],
 				$this->config['lightbox'],
 				$path,
@@ -525,7 +537,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase {
 		// advanced settings (from TS + tab flexform configuration)
 		$advancedSettings .= ($this->config['hideInfoPane']) ? 'showInfopane: false,' : '';
 		if ($this->config['thumbOpacity'] && $this->config['thumbOpacity'] > 0 && $this->config['thumbOpacity']<=1) $advancedSettings.= 'thumbOpacity: '.$this->config['thumbOpacity'].',';
-		if ($this->config['hideInfoPane'] && $this->config['slideInfoZoneOpacity'] && $this->config['slideInfoZoneOpacity'] > 0 && $this->config['slideInfoZoneOpacity']<=1) $advancedSettings.= 'slideInfoZoneOpacity: '.$this->config['slideInfoZoneOpacity'].',';   
+		if (!$this->config['hideInfoPane'] && $this->config['slideInfoZoneOpacity'] && $this->config['slideInfoZoneOpacity'] > 0 && $this->config['slideInfoZoneOpacity']<=1) $advancedSettings.= 'slideInfoZoneOpacity: '.$this->config['slideInfoZoneOpacity'].',';  		   
 		$advancedSettings .= ($this->config['thumbSpacing']) ? 'thumbSpacing: ' . $this->config['thumbSpacing'] . ',' : '';
 		$advancedSettings .= ($this->config['showPlay']) ? 'showPlay: true,' : '';
 		
@@ -553,7 +565,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase {
                   ' . $advancedSettings . '
     					    lightbox:true
     				    });
-    				    var mylightbox = new Lightbox();
+    				    var mylightbox = new LightboxSmoothgallery();
     				    }catch(error){
     				    window.setTimeout("startGallery' . $uniqueId . '();",2500);
     				    }

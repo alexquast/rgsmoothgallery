@@ -7,7 +7,7 @@ gallery = gallery.extend({
 	initialize: function(element, options) {
 		this.parent(element, options);
 		this.addEvent('onPopulated', this.makeLink.bind(this));
-		if (options.lightbox) this.lightbox = new lightboxforsmoothgallery(this.galleryData, {});
+		if (options.lightbox) this.lightbox2 = new lightboxforsmoothgallery(this.galleryData, {});
 	},
 	populateData: function() {
 		currentArrayPlace = this.galleryData.length;
@@ -58,7 +58,7 @@ gallery = gallery.extend({
 			href: this.galleryData[num].link,
 			title: this.galleryData[num].linkTitle
 		})
-		if (options.lightbox) this.currentLink.onclick = this.lightbox.open.pass(num, this.lightbox);
+		if (options.lightbox) this.currentLink.onclick = this.lightbox2.open.pass(num, this.lightbox2);
 		if (!((this.options.embedLinks) && (!this.options.showArrows) && (!this.options.showCarousel)))
 			this.currentLink.setStyle('display', 'block');	
 	}
@@ -70,7 +70,7 @@ gallery = gallery.extend({
 	Inspired by the original Lightbox v2 by Lokesh Dhakar.
 */
 
-var Lightbox = new Class({
+var LightboxSmoothgallery = new Class({
 	
 	initialize: function(options) {
 		this.options = Object.extend({
@@ -80,12 +80,7 @@ var Lightbox = new Class({
 			animateCaption: true		// Enable/Disable caption animation
 		}, options || {});
 		this.anchors = [];
-		$A(document.getElementsByTagName('a')).each(function(el){
-			if(el.rel && el.href && el.rel.test('^lightbox', 'i')) {
-				el.onclick = this.click.pass(el, this);
-				this.anchors.push(el);
-			}
-		}, this);
+
 
 		this.eventKeyDown = this.keyboardListener.bindAsEventListener(this);
 		this.eventPosition = this.position.bind(this);
@@ -104,18 +99,18 @@ var Lightbox = new Class({
 		this.preloadNext = new Image();
 	},
 	buildbox : function () {
-		this.overlay = new Element('div').setProperty('id', 'lbOverlay').injectInside(document.body);	
-		this.center = new Element('div').setProperty('id', 'lbCenter').setStyles({width: this.options.initialWidth+'px', height: this.options.initialHeight+'px', marginLeft: '-'+(this.options.initialWidth/2)+'px', display: 'none'}).injectInside(document.body);
-		this.image = new Element('div').setProperty('id', 'lbImage').injectInside(this.center);
-		this.prevLink = new Element('a').setProperties({id: 'lbPrevLink', href: 'javascript:void(0)'}).setStyle('display', 'none').injectInside(this.image);
-		this.nextLink = this.prevLink.clone().setProperty('id', 'lbNextLink').injectInside(this.image);
+		this.overlay = new Element('div').setProperty('id', 'rglbOverlay').injectInside(document.body);	
+		this.center = new Element('div').setProperty('id', 'rglbCenter').setStyles({width: this.options.initialWidth+'px', height: this.options.initialHeight+'px', marginLeft: '-'+(this.options.initialWidth/2)+'px', display: 'none'}).injectInside(document.body);
+		this.image = new Element('div').setProperty('id', 'rglbImage').injectInside(this.center);
+		this.prevLink = new Element('a').setProperties({id: 'rglbPrevLink', href: 'javascript:void(0)'}).setStyle('display', 'none').injectInside(this.image);
+		this.nextLink = this.prevLink.clone().setProperty('id', 'rglbNextLink').injectInside(this.image);
 		this.prevLink.onclick = this.previous.bind(this);
 		this.nextLink.onclick = this.next.bind(this);
 	
-		this.bottom = new Element('div').setProperty('id', 'lbBottom').setStyle('display', 'none').injectInside(document.body);
-		new Element('a').setProperties({id: 'lbCloseLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.overlay.onclick = this.close.bind(this);
-		this.number = new Element('div').setProperty('id', 'lbNumber').injectInside(this.bottom);
-		this.caption = new Element('div').setProperty('id', 'lbCaption').injectInside(this.bottom);
+		this.bottom = new Element('div').setProperty('id', 'rglbBottom').setStyle('display', 'none').injectInside(document.body);
+		new Element('a').setProperties({id: 'rglbCloseLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.overlay.onclick = this.close.bind(this);
+		this.number = new Element('div').setProperty('id', 'rglbNumber').injectInside(this.bottom);
+		this.caption = new Element('div').setProperty('id', 'rglbCaption').injectInside(this.bottom);
 		new Element('div').setStyle('clear', 'both').injectInside(this.bottom);
 	},
 	click: function(link) {
@@ -197,7 +192,7 @@ var Lightbox = new Class({
 		this.prevLink.style.display = this.nextLink.style.display = 'none';
 		this.bottom.setStyles({opacity: '0', height: '0px', display: 'none'});
 		this.fx.image.hide();
-		this.center.className = 'lbLoading';
+		this.center.className = 'rglbLoading';
 		
 		this.preload = new Image();
 		this.preload.onload = this.nextEffect.bind(this);
@@ -264,7 +259,7 @@ var Lightbox = new Class({
 /* website: http://www.oscandy.com/author/taras */
 
 // This class extends lightbox class and makes the lightbox compatible with smoothgallery
-var lightboxforsmoothgallery = Lightbox.extend({
+var lightboxforsmoothgallery = LightboxSmoothgallery.extend({
 	initialize: function(galleryData, options) {
 		this.options = Object.extend({
 			resizeDuration: 400,	// Duration of height and width resizing (ms)
@@ -278,29 +273,29 @@ var lightboxforsmoothgallery = Lightbox.extend({
 		this.eventKeyDown = this.keyboardListener.bindAsEventListener(this);
 		this.eventPosition = this.position.bind(this);
 		
-		this.overlay = new Element('div').setProperty('id', 'lbOverlay').injectInside(document.body);
+		this.overlay = new Element('div').setProperty('id', 'rglbOverlay').injectInside(document.body);
 		
-		this.center = new Element('div').setProperty('id', 'lbCenter').setStyles({width: this.options.initialWidth+'px', height: this.options.initialHeight+'px', marginLeft: '-'+(this.options.initialWidth/2)+'px', display: 'none'}).injectInside(document.body);
-		this.image = new Element('div').setProperty('id', 'lbImage').injectInside(this.center);
-		this.prevLink = new Element('a').setProperties({id: 'lbPrevLink', href: 'javascript:void(0)'}).setStyle('display', 'none').injectInside(this.image);
-		this.nextLink = this.prevLink.clone().setProperty('id', 'lbNextLink').injectInside(this.image);
+		this.center = new Element('div').setProperty('id', 'rglbCenter').setStyles({width: this.options.initialWidth+'px', height: this.options.initialHeight+'px', marginLeft: '-'+(this.options.initialWidth/2)+'px', display: 'none'}).injectInside(document.body);
+		this.image = new Element('div').setProperty('id', 'rglbImage').injectInside(this.center);
+		this.prevLink = new Element('a').setProperties({id: 'rglbPrevLink', href: 'javascript:void(0)'}).setStyle('display', 'none').injectInside(this.image);
+		this.nextLink = this.prevLink.clone().setProperty('id', 'rglbNextLink').injectInside(this.image);
 		this.prevLink.onclick = this.previous.bind(this);
 		this.nextLink.onclick = this.next.bind(this);
 		
-		this.bottom = new Element('div').setProperty('id', 'lbBottom').setStyle('display', 'none').injectInside(document.body);
-		this.close = new Element('a').setProperties({id: 'lbCloseLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.overlay.onclick = this.close.bind(this);
-		this.number = new Element('div').setProperty('id', 'lbNumber').addClass('gallery').injectInside(this.bottom);
-		this.description = new Element('div').setProperty('id', 'lbDescription').injectInside(this.bottom);
-		this.title = new Element('div').setProperty('id', 'lbTitle').injectInside(this.description);
+		this.bottom = new Element('div').setProperty('id', 'rglbBottom').setStyle('display', 'none').injectInside(document.body);
+		this.close = new Element('a').setProperties({id: 'rglbCloseLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.overlay.onclick = this.close.bind(this);
+		this.number = new Element('div').setProperty('id', 'rglbNumber').addClass('gallery').injectInside(this.bottom);
+		this.description = new Element('div').setProperty('id', 'rglbDescription').injectInside(this.bottom);
+		this.title = new Element('div').setProperty('id', 'rglbTitle').injectInside(this.description);
 		new Element('div').setStyle('clear', 'both').injectInside(this.description);
-		this.caption = new Element('div').setProperty('id', 'lbCaption').injectInside(this.description);
+		this.caption = new Element('div').setProperty('id', 'rglbCaption').injectInside(this.description);
 
     buttons = $$('.rgsg-btn');
     if (buttons.length >0) {
     buttonsConf = buttons[0].innerHTML;    
 
-    if (buttonsConf == 10 || buttonsConf == 11 ) 	 new Element('a').setProperties({id: 'lbSaveLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'save');
-    if (buttonsConf == 01 || buttonsConf == 11 ) 	 new Element('a').setProperties({id: 'lbPrintLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'print');
+    if (buttonsConf == 10 || buttonsConf == 11 ) 	 new Element('a').setProperties({id: 'rglbSaveLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'save');
+    if (buttonsConf == 01 || buttonsConf == 11 ) 	 new Element('a').setProperties({id: 'rglbPrintLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'print');
     }
     new Element('div').setStyle('clear', 'both').injectInside(this.bottom);
 
@@ -319,27 +314,27 @@ var lightboxforsmoothgallery = Lightbox.extend({
 		this.changeImage.bind(this);		
 	},
 	buildbox : function () {
-		this.overlay = new Element('div').setProperty('id', 'lbOverlay').injectInside(document.body);	
-		this.center = new Element('div').setProperty('id', 'lbCenter').setStyles({width: this.options.initialWidth+'px', height: this.options.initialHeight+'px', marginLeft: '-'+(this.options.initialWidth/2)+'px', display: 'none'}).injectInside(document.body);
-		this.image = new Element('div').setProperty('id', 'lbImage').injectInside(this.center);
-		this.prevLink = new Element('a').setProperties({id: 'lbPrevLink', href: 'javascript:void(0)'}).setStyle('display', 'none').injectInside(this.image);
-		this.nextLink = this.prevLink.clone().setProperty('id', 'lbNextLink').injectInside(this.image);
+		this.overlay = new Element('div').setProperty('id', 'rglbOverlay').injectInside(document.body);	
+		this.center = new Element('div').setProperty('id', 'rglbCenter').setStyles({width: this.options.initialWidth+'px', height: this.options.initialHeight+'px', marginLeft: '-'+(this.options.initialWidth/2)+'px', display: 'none'}).injectInside(document.body);
+		this.image = new Element('div').setProperty('id', 'rglbImage').injectInside(this.center);
+		this.prevLink = new Element('a').setProperties({id: 'rglbPrevLink', href: 'javascript:void(0)'}).setStyle('display', 'none').injectInside(this.image);
+		this.nextLink = this.prevLink.clone().setProperty('id', 'rglbNextLink').injectInside(this.image);
 		this.prevLink.onclick = this.previous.bind(this);
 		this.nextLink.onclick = this.next.bind(this);
 	
-		this.bottom = new Element('div').setProperty('id', 'lbBottom').setStyle('display', 'none').injectInside(document.body);
-		new Element('a').setProperties({id: 'lbCloseLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.overlay.onclick = this.close.bind(this);
-		new Element('div').setProperty('id', 'lbDescription').injectInside(this.bottom);
-		this.number = new Element('div').setProperty('id', 'lbNumber').injectInside(this.bottom);
-		this.title = new Element('div').setProperty('id', 'lbTitle').injectInside(this.description);
-		this.caption = new Element('div').setProperty('id', 'lbCaption').injectInside(this.description);
+		this.bottom = new Element('div').setProperty('id', 'rglbBottom').setStyle('display', 'none').injectInside(document.body);
+		new Element('a').setProperties({id: 'rglbCloseLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.overlay.onclick = this.close.bind(this);
+		new Element('div').setProperty('id', 'rglbDescription').injectInside(this.bottom);
+		this.number = new Element('div').setProperty('id', 'rglbNumber').injectInside(this.bottom);
+		this.title = new Element('div').setProperty('id', 'rglbTitle').injectInside(this.description);
+		this.caption = new Element('div').setProperty('id', 'rglbCaption').injectInside(this.description);
      alert("xxx"+buttonsConf);
     buttons = $$('.rgsg-btn');
     buttonsConf = buttons[0].innerHTML;    
 
-    if (buttonsConf == 10 || buttonsConf == 11 ) 	 new Element('a').setProperties({id: 'lbSaveLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'save');
-    if (buttonsConf == 01 || buttonsConf == 11 ) 	 new Element('a').setProperties({id: 'lbPrintLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'print');
-		new Element('a').setProperties({id: 'lbPrintLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'print');
+    if (buttonsConf == 10 || buttonsConf == 11 ) 	 new Element('a').setProperties({id: 'rglbSaveLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'save');
+    if (buttonsConf == 01 || buttonsConf == 11 ) 	 new Element('a').setProperties({id: 'rglbPrintLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'print');
+		new Element('a').setProperties({id: 'rglbPrintLink', href: 'javascript:void(0)'}).injectInside(this.bottom).onclick = this.printOrSave.bind(this,'print');
     
     new Element('div').setStyle('clear', 'both').injectInside(this.bottom);
 	},
@@ -367,7 +362,7 @@ var lightboxforsmoothgallery = Lightbox.extend({
 		this.prevLink.style.display = this.nextLink.style.display = 'none';
 		this.bottom.setStyles({opacity: '0', height: '0px', display: 'none'});
 		this.fx.image.hide();
-		this.center.className = 'lbLoading';
+		this.center.className = 'rglbLoading';
 		
 		this.preload = new Image();
 		this.preload.onload = this.nextEffect.bind(this);

@@ -1,7 +1,7 @@
 /* SLIGHTBOX */
 /* variation on SLIMBOX */
 
-#lbOverlay {
+#rglbOverlay {
 	position: absolute;
 	left: 0;
 	width: 100%;
@@ -10,7 +10,7 @@
 	z-index: 15;
 }
 
-#lbCenter, #lbBottom {
+#rglbCenter, #rglbBottom {
 	position: absolute;
 	left: 50%;
 	overflow: hidden;
@@ -19,20 +19,20 @@
 	border: 1px solid #666;
 }
 
-#lbCenter {
+#rglbCenter {
 	padding: 10px;
 }
 
-.lbLoading {
+.rglbLoading {
 	background: #fff url('img/loading-bar-black.gif') no-repeat center;
 	border: 1px solid #666;
 }
 
-#lbImage {
+#rglbImage {
 	z-index: 25;
 }
 
-#lbPrevLink, #lbNextLink {
+#rglbPrevLink, #rglbNextLink {
 	display: block;
 	position: absolute;
 	top: 0;
@@ -41,27 +41,27 @@
 	z-index: 26;
 }
 
-#lbPrevLink {
+#rglbPrevLink {
 	left: 0;
 }
 
-#lbPrevLink:hover {
+#rglbPrevLink:hover {
 	background: transparent url('img/fleche1.png') no-repeat 0% 50%;
 }
 
-* html #lbPrevLink:hover { background: transparent url('img/fleche1.gif') no-repeat 0% 50%; }
+* html #rglbPrevLink:hover { background: transparent url('img/fleche1.gif') no-repeat 0% 50%; }
 
-#lbNextLink {
+#rglbNextLink {
 	right: 0;
 }
 
-#lbNextLink:hover {
+#rglbNextLink:hover {
 	background: transparent url('img/fleche2.png') no-repeat 100% 50%;
 }
 
-* html #lbNextLink:hover { background: transparent url('img/fleche2.gif') no-repeat 100% 50%; }
+* html #rglbNextLink:hover { background: transparent url('img/fleche2.gif') no-repeat 100% 50%; }
 
-#lbBottom {
+#rglbBottom {
 	font-family: Verdana, Helvetica, sans-serif;
 	font-size: 10px;
 	color: #666;
@@ -72,7 +72,7 @@
 	border-top-style: none;
 }
 
-#lbCloseLink {
+#rglbCloseLink {
 	display: block;
 	float: right;
 	width: 80px;
@@ -81,39 +81,39 @@
 	margin-bottom: 10px;
 }
 
-#lbNumber {
+#rglbNumber {
 	display: block;
 	float: left;
 }
 
-#lbNumber.gallery {
+#rglbNumber.gallery {
 	display: block;
 	float: left;
 	padding: 10px;
 }
 
-#lbCaption {
+#rglbCaption {
 	margin-left: 10px;
 	display: block;
 	float: left;
 }
 
-#lbDescription {
+#rglbDescription {
 	float: left;
 	padding-right: 10px;
 }
 
-#lbDescription #lbTitle {
+#rglbDescription #rglbTitle {
 	float: left;
 	clear: both;
 	font-weight: bold;
 }
 
-#lbDescription #lbCaption {
+#rglbDescription #rglbCaption {
 	margin-left: 0;
 }
 
-#lbPrintLink {
+#rglbPrintLink {
 	display: block;
 	float: right;
 	width: 22px;
@@ -123,7 +123,7 @@
   padding:1px;
 }
 
-#lbSaveLink {
+#rglbSaveLink {
 	display: block;
 	float: right;
 	width: 22px;

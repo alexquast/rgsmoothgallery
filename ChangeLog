@@ -1,5 +1,10 @@
 This is just a copy of http://www.rggooglemap.com/dev/rgsmoothgallery/history.html
 
+1.5.1
+- [Bug] nl2br for the description, thx to Frank Knud
+- [Bug] allow to change slideInfoZoneOpacity, thx fo Frank Knud
+
+
  1.0.6.
 - [Feature[ Watermarks (Wasserzeichen) for the images
 - [Feature] Trim whitespaces from directory path (flexforms + main class)

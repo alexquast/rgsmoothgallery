@@ -395,7 +395,7 @@ tt_content.newimage {
       80 = TEXT
       80.field = longdescURL
       80.ifEmpty = {$plugin.tx_rgsmoothgallery.settings}
-      80.wrap = | }); var mylightbox = new Lightbox(); }
+      80.wrap = | }); var mylightbox = new LightboxSmoothgallery(); }
       81 = TEXT
       81.dataWrap (
                 window.onDomReady(startGallery{field:uid});
