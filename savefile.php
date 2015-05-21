@@ -38,11 +38,11 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
 
 $image = $_GET['image'];
 
-// first check if the requested file has an valid image file extension, not the nicest security feature but at least it prevents from downloading php files like localconf.php.
-// thx peter klein
+	// remove domain if it is prepended
+$image = str_replace(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '', $image);
 $allowedExtensions = t3lib_div::trimExplode(',', (strlen($TYPO3_CONF_VARS['GFX']['imagefile_ext']) > 0 ? $TYPO3_CONF_VARS['GFX']['imagefile_ext'] : 'gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai'), 1);
 $imageInfo = pathinfo($image);
- if(!in_array(strtolower($imageInfo['extension']), $allowedExtensions)) { die('You try to download a file, you are not allowed to download'); }
+if(!is_file(t3lib_div::getFileAbsFileName($image)) || !in_array(strtolower($imageInfo['extension']), $allowedExtensions)) { die('You try to download a file, you are not allowed to download'); }
 
 
 switch ($_GET['mode']) {
@@ -72,7 +72,7 @@ function print_image($filename) {
 			window.close();
 		}
 		window.onload = printit;
-		</script>		
+		</script>
 	</head>
 	<body style="margin:0;padding:0;">
 		<img src="/'.$filename.'" style="border:none;cursor:pointer;" onclick="self.close()">
@@ -103,7 +103,7 @@ $filenameOrig = $filename;
 			default: $mimetype="application/force-download";
 		}
 	}
-	
+
 
 
 	// Make sure there's nothing else left
