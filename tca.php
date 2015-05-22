@@ -1,91 +1,93 @@
 <?php
-if (!defined ('TYPO3_MODE'))     die ('Access denied.');
 
-$TCA["tx_rgsmoothgallery_image"] = array (
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
+
+$TCA["tx_rgsmoothgallery_image"] = array(
     "ctrl" => $TCA["tx_rgsmoothgallery_image"]["ctrl"],
-    "interface" => array (
-        "showRecordFieldList" => "sys_language_uid,l18n_parent,l18n_diffsource,hidden,title,description,image"
+    "interface" => array(
+        "showRecordFieldList" => "sys_language_uid,l18n_parent,l18n_diffsource,hidden,title,description,image",
     ),
     "feInterface" => $TCA["tx_rgsmoothgallery_image"]["feInterface"],
-    "columns" => array (
-        'sys_language_uid' => array (        
+    "columns" => array(
+        'sys_language_uid' => array(
             'exclude' => 1,
-            'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
-            'config' => array (
-                'type'                => 'select',
-                'foreign_table'       => 'sys_language',
+            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
+            'config' => array(
+                'type' => 'select',
+                'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => array(
                     array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
-                    array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-                )
-            )
+                    array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0),
+                ),
+            ),
         ),
-        'l18n_parent' => array (        
+        'l18n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude'     => 1,
-            'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-            'config'      => array (
-                'type'  => 'select',
-                'items' => array (
+            'exclude' => 1,
+            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
+            'config' => array(
+                'type' => 'select',
+                'items' => array(
                     array('', 0),
                 ),
-                'foreign_table'       => 'tx_rgsmoothgallery_image',
+                'foreign_table' => 'tx_rgsmoothgallery_image',
                 'foreign_table_where' => 'AND tx_rgsmoothgallery_image.pid=###CURRENT_PID### AND tx_rgsmoothgallery_image.sys_language_uid IN (-1,0)',
-            )
+            ),
         ),
-        'l18n_diffsource' => array (        
-            'config' => array (
-                'type' => 'passthrough'
-            )
+        'l18n_diffsource' => array(
+            'config' => array(
+                'type' => 'passthrough',
+            ),
         ),
-        'hidden' => array (        
+        'hidden' => array(
             'exclude' => 1,
-            'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config'  => array (
-                'type'    => 'check',
-                'default' => '0'
-            )
+            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+            'config' => array(
+                'type' => 'check',
+                'default' => '0',
+            ),
         ),
-        "title" => Array (        
-            "exclude" => 1,        
-            "label" => "LLL:EXT:rgsmoothgallery/locallang_db.xml:tx_rgsmoothgallery_image.title",        
-            "config" => Array (
-                "type" => "input",    
-                "size" => "30",
-            )
-        ),
-        "description" => Array (        
-            "exclude" => 1,        
-            "label" => "LLL:EXT:rgsmoothgallery/locallang_db.xml:tx_rgsmoothgallery_image.description",        
-            "config" => Array (
-                "type" => "text",
-                "cols" => "30",    
-                "rows" => "2",
-            )
-        ),
-        "image" => Array (        
+        "title" => array(
             "exclude" => 1,
-			      "l10n_mode" => 'mergeIfNotBlank',                    
-            "label" => "LLL:EXT:rgsmoothgallery/locallang_db.xml:tx_rgsmoothgallery_image.image",        
-            "config" => Array (
+            "label" => "LLL:EXT:rgsmoothgallery/locallang_db.xml:tx_rgsmoothgallery_image.title",
+            "config" => array(
+                "type" => "input",
+                "size" => "30",
+            ),
+        ),
+        "description" => array(
+            "exclude" => 1,
+            "label" => "LLL:EXT:rgsmoothgallery/locallang_db.xml:tx_rgsmoothgallery_image.description",
+            "config" => array(
+                "type" => "text",
+                "cols" => "30",
+                "rows" => "2",
+            ),
+        ),
+        "image" => array(
+            "exclude" => 1,
+            "l10n_mode" => 'mergeIfNotBlank',
+            "label" => "LLL:EXT:rgsmoothgallery/locallang_db.xml:tx_rgsmoothgallery_image.image",
+            "config" => array(
                 "type" => "group",
                 "internal_type" => "file",
-                "allowed" => "gif,png,jpeg,jpg",    
-                "max_size" => 2500,    
+                "allowed" => "gif,png,jpeg,jpg",
+                "max_size" => 2500,
                 "uploadfolder" => "uploads/tx_rgsmoothgallery",
-                "show_thumbs" => 1,    
-                "size" => 1,    
+                "show_thumbs" => 1,
+                "size" => 1,
                 "minitems" => 0,
                 "maxitems" => 1,
-            )
+            ),
         ),
     ),
-    "types" => array (
-        "0" => array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;;;2-2-2, description;;;;3-3-3, image")
+    "types" => array(
+        "0" => array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;;;2-2-2, description;;;;3-3-3, image"),
     ),
-    "palettes" => array (
-        "1" => array("showitem" => "")
-    )
+    "palettes" => array(
+        "1" => array("showitem" => ""),
+    ),
 );
-?>
