@@ -177,10 +177,10 @@ var gallery = {
 				transition: this.options.defaultTransition
 			});
 			if ((options.showInfopane) | (options.showCarousel))
-				elementDict.extend({
-					title: el.getElement(options.titleSelector).innerHTML,
-					description: el.getElement(options.subtitleSelector).innerHTML
-				});
+					elementDict.extend({
+						title: el.getElement(options.titleSelector) ? el.getElement(options.titleSelector).innerHTML : '',
+						description: el.getElement(options.subtitleSelector) ? el.getElement(options.subtitleSelector).innerHTML : ''
+					});
 			if ((options.embedLinks) | (options.useReMooz))
 				elementDict.extend({
 					link: el.getElement(options.linkSelector).href||false,
@@ -571,17 +571,19 @@ var gallery = {
 		this.showInfoSlideShow.delay(500, this);
 	},
 	showInfoSlideShow: function() {
-		this.fireEvent('onShowInfopane');
-		this.slideInfoZone.cancel();
-		element = this.slideInfoZone.element;
-		element.getElement('h2').set('html', this.galleryData[this.currentIter].title);
-		element.getElement('p').set('html', this.galleryData[this.currentIter].description);
-		if(this.options.slideInfoZoneSlide)
-			this.slideInfoZone.start({'opacity': [0, this.options.slideInfoZoneOpacity], 'height': [0, this.slideInfoZone.normalHeight]});
-		else
-			this.slideInfoZone.start({'opacity': [0, this.options.slideInfoZoneOpacity]});
-		if (this.options.showCarousel)
-			this.slideInfoZone.chain(this.centerCarouselOn.pass(this.currentIter, this));
+		if (this.galleryData[this.currentIter].title) {
+			this.fireEvent('onShowInfopane');
+			this.slideInfoZone.cancel();
+			element = this.slideInfoZone.element;
+			element.getElement('h2').set('html', this.galleryData[this.currentIter].title);
+			element.getElement('p').set('html', this.galleryData[this.currentIter].description);
+			if(this.options.slideInfoZoneSlide)
+				this.slideInfoZone.start({'opacity': [0, this.options.slideInfoZoneOpacity], 'height': [0, this.slideInfoZone.normalHeight]});
+			else
+				this.slideInfoZone.start({'opacity': [0, this.options.slideInfoZoneOpacity]});
+			if (this.options.showCarousel)
+				this.slideInfoZone.chain(this.centerCarouselOn.pass(this.currentIter, this));
+		}
 		return this.slideInfoZone;
 	},
 	hideInfoSlideShow: function() {
