@@ -40,11 +40,10 @@ plugin.tx_rgsmoothgallery_pi1 {
     file.maxH = 600
   }
 
-  pathToMootools = EXT:rgsmoothgallery/res/scripts/mootools.js
-  pathToJdgalleryJS = EXT:rgsmoothgallery/res/scripts/jd.gallery1010.js
+  pathToMootools = EXT:rgsmoothgallery/res/scripts/mootools-1.2.1-core-yc.js
+  pathToMootoolsMore = EXT:rgsmoothgallery/res/scripts/mootools-1.2-more.js
+  pathToJdgalleryJS = EXT:rgsmoothgallery/res/scripts/jd.gallery.js
   pathToJdgalleryCSS = EXT:rgsmoothgallery/res/css/jd.gallery.css
-  pathToJdgallerySetJS = EXT:rgsmoothgallery/res/scripts/jd.gallery.set.js
-  pathToJdgalleryTransitionsJS = EXT:rgsmoothgallery/res/scripts/jd.gallery.transitions.js
 
 
   settings = {$plugin.tx_rgsmoothgallery.settings}
@@ -372,7 +371,7 @@ tt_content.newimage {
       80.wrap = | }); }
       81 = TEXT
       81.dataWrap (
-                window.onDomReady(startGallery{field:uid});
+                window.addEvent("domready", startGallery{field:uid});
             </script>
         <div class="content"><div class="myGallery" id="myGallery{field:uid}">
       )

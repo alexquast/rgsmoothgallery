@@ -117,17 +117,13 @@ class tx_rgsmoothgallery_fe
 				<script type="text/javascript">' . $externalControl1 . '
 					function startGallery' . $uniqueId . '() {
 						if(window.gallery' . $uniqueId . ') {
-							try {
-								' . $externalControl2 . ' myGallery' . $uniqueId . ' = new gallery($(\'myGallery' . $uniqueId . '\'), {
-									' . $duration . ',
-									showArrows: ' . $arrows . ',
-									showCarousel: ' . $thumbs . ',
-									embedLinks: false,
-									' . $advancedSettings . '
-								});
-							}	catch(error){
-								window.setTimeout("startGallery' . $uniqueId . '();",2500);
-							}
+                            ' . $externalControl2 . ' myGallery' . $uniqueId . ' = new gallery($(\'myGallery' . $uniqueId . '\'), {
+                                ' . $duration . ',
+                                showArrows: ' . $arrows . ',
+                                showCarousel: ' . $thumbs . ',
+                                embedLinks: false,
+                                ' . $advancedSettings . '
+                            });
 						} else {
 							window.gallery' . $uniqueId . '=true;
 							if(this.ie) {
@@ -137,7 +133,7 @@ class tx_rgsmoothgallery_fe
 							}
 						}
 					}
-					window.onDomReady(startGallery' . $uniqueId . ');
+                    window.addEvent("domready", startGallery' . $uniqueId . ');
 				</script>
 				<noscript>
 					<div><img src="' . $this->cObj->IMG_RESOURCE($noJsImg) . '"  /></div>

@@ -32,6 +32,7 @@ class tx_rgsmoothgallery_rgsg
             tx_t3mootools::addMooJS();
         } else {
             $header .= $this->getPath($this->conf['pathToMootools']) ? '<script src="' . $this->getPath($this->conf['pathToMootools']) . '" type="text/javascript"></script>' : '';
+            $header .= $this->getPath($this->conf['pathToMootoolsMore']) ? '<script src="' . $this->getPath($this->conf['pathToMootoolsMore']) . '" type="text/javascript"></script>' : '';
         }
 
         // path to js + css

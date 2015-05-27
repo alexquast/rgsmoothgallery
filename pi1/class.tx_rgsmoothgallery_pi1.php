@@ -469,6 +469,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
             tx_t3mootools::addMooJS();
         } else {
             $header .= $this->getPath($this->conf['pathToMootools']) ? '<script src="' . $this->getPath($this->conf['pathToMootools']) . '" type="text/javascript"></script>' : '';
+            $header .= $this->getPath($this->conf['pathToMootoolsMore']) ? '<script src="' . $this->getPath($this->conf['pathToMootoolsMore']) . '" type="text/javascript"></script>' : '';
         }
 
         // path to js + css
@@ -523,32 +524,26 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
             $js .= '
     		<script type="text/javascript">' . $externalControl1 . '
     			function startGallery' . $uniqueId . '() {
-    			  if(window.gallery' . $uniqueId . ')
-    			    {
-    			    try
-    			      {
-    				    ' . $externalControl2 . ' myGallery' . $uniqueId . ' = new gallery($(\'myGallery' . $uniqueId . '\'), {
-    					    ' . $duration . ',
-    					      showArrows: ' . $arrows . ',
-                  showCarousel: ' . $thumbs . ',
-                  textShowCarousel: \'' . $this->pi_getLL('textShowCarousel') . '\',
-                  embedLinks: false,
-                  ' . $advancedSettings . '
-    				    });
-    				    }catch(error){
-    				    window.setTimeout("startGallery' . $uniqueId . '();",2500);
-    				    }
-    				  }else{
-    				  window.gallery' . $uniqueId . '=true;
-    				  if(this.ie)
-    				    {
-    				    window.setTimeout("startGallery' . $uniqueId . '();",3000);
-    				    }else{
-    				    window.setTimeout("startGallery' . $uniqueId . '();",100);
-    				    }
-    				  }
-    			}
-    			window.onDomReady(startGallery' . $uniqueId . ');
+                    if(window.gallery' . $uniqueId . ') {
+                        ' . $externalControl2 . ' myGallery' . $uniqueId . ' = new gallery($(\'myGallery' . $uniqueId . '\'), {
+                        ' . $duration . ',
+                        showArrows: ' . $arrows . ',
+                        showCarousel: ' . $thumbs . ',
+                        textShowCarousel: \'' . $this->pi_getLL('textShowCarousel') . '\',
+                        embedLinks: false,
+                        ' . $advancedSettings . '
+                        });
+                    } else {
+                        window.gallery' . $uniqueId . '=true;
+                        if(this.ie)
+                        {
+                            window.setTimeout("startGallery' . $uniqueId . '();",3000);
+                        } else {
+                            window.setTimeout("startGallery' . $uniqueId . '();",100);
+                        }
+                    }
+                }
+                window.addEvent("domready", startGallery' . $uniqueId . ');
     		</script>';
             if ($this->conf['noscript'] == 1) {
                 $js .= '<noscript>
