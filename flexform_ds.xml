@@ -150,18 +150,6 @@
                 <type>array</type>
                 <el>
 
-                    <lightbox>
-                        <TCEforms>
-                            <label>LLL:EXT:rgsmoothgallery/locallang.xml:flexform.sheets.advanced.lightbox</label>
-                            <config>
-                                <type>check</type>
-                                <default>1</default>
-                            </config>
-                        </TCEforms>
-                    </lightbox>
-
-
-
                     <arrows>
                         <TCEforms>
                             <label>LLL:EXT:rgsmoothgallery/locallang.xml:flexform.sheets.advanced.arrows</label>

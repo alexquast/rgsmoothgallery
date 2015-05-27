@@ -95,8 +95,6 @@ class tx_rgsmoothgallery_fe
                 $uniqueId = $this->realConf->config['code'] . $uniqueId;
 
                 // configuration of gallery
-                $lightbox = ($rgsgConf['lightbox'] == 1) ? 'true' : 'false';
-                $lightbox2 = ($rgsgConf['lightbox'] == 1) ? 'var mylightbox = new LightboxSmoothgallery();' : '';
                 $duration = ($rgsgConf['duration']) ? 'timed:true,delay: ' . $rgsgConf['duration'] : 'timed:false';
                 $thumbs = ($rgsgConf['showThumbs'] == 1) ? 'true' : 'false';
                 $arrows = ($rgsgConf['arrows'] == 1) ? 'true' : 'false';
@@ -124,11 +122,9 @@ class tx_rgsmoothgallery_fe
 									' . $duration . ',
 									showArrows: ' . $arrows . ',
 									showCarousel: ' . $thumbs . ',
-									embedLinks:' . $lightbox . ',
+									embedLinks: false,
 									' . $advancedSettings . '
-									lightbox:true
 								});
-								var mylightbox = new LightboxSmoothgallery();
 							}	catch(error){
 								window.setTimeout("startGallery' . $uniqueId . '();",2500);
 							}
@@ -151,7 +147,7 @@ class tx_rgsmoothgallery_fe
                 // get the JS
 
 
-                $content = $this->gallery->getJs(1, 1, 1, 0, $rgsgConf['width'], $rgsgConf['height'], $rgsgConf['width'], $rgsgConf['height'], '', $uniqueId, $rgsgConf, $configuration);
+                $content = $this->gallery->getJs(1, 1, 0, $rgsgConf['width'], $rgsgConf['height'], '', $uniqueId, $rgsgConf, $configuration);
                 // Begin the gallery
                 $content .= $this->gallery->beginGallery($uniqueId);
                 // add the images
@@ -163,17 +159,12 @@ class tx_rgsmoothgallery_fe
                     $imgTSConfigThumb['file'] = $path;
                     $imgTSConfigBig = $rgsgConf['big.'];
                     $imgTSConfigBig['file'] = $path;
-                    $imgTSConfigLightbox = $rgsgConf['lightbox.'];
-                    $imgTSConfigLightbox['file'] = $path;
-                    # $lightbox = ($rgsgConf['lightbox']==1) ? $this->cObj->IMG_RESOURCE($imgTSConfigLightbox) : $this->cObj->IMG_RESOURCE($imgTSConfigLightbox);
                     // caption text
                     $text = explode('|', $caption[$i]);
 
                     // add image
 
-                    $content .= $this->addImage(
-                            $path, $text[0], $text[1], true, true, $path, $limitImages
-                    );
+                    $content .= $this->addImage($path, $text[0], $text[1]);
                     $i++;
                 } # end foreach file
                 // end of image
@@ -190,8 +181,7 @@ class tx_rgsmoothgallery_fe
         return $markerArray;
     }
 
-#end extraItemMarkerProcessor
-    public function addImage($path, $title, $description, $thumb, $lightbox, $uniqueID, $limitImages = 0)
+    private function addImage($path, $title, $description)
     {
         if ($this->rgsgConf['hideInfoPane'] != 1) {
             $text = (!$title) ? '' : "<h3>$title</h3>";
@@ -202,18 +192,11 @@ class tx_rgsmoothgallery_fe
         if ($this->rgsgConf['watermark']) {
             $imgTSConfigBig = $this->rgsgConf['big2.'];
             $imgTSConfigBig['file.']['10.']['file'] = $path;
-            $imgTSConfigLightbox = $this->rgsgConf['lightbox2.'];
-            $imgTSConfigLightbox['file.']['10.']['file'] = $path;
         } else {
             $imgTSConfigBig = $this->rgsgConf['big.'];
             $imgTSConfigBig['file'] = $path;
-            $imgTSConfigLightbox = $this->rgsgConf['lightbox.'];
-            $imgTSConfigLightbox['file'] = $path;
         }
         $bigImage = $this->cObj->IMG_RESOURCE($imgTSConfigBig);
-
-        $lightbox = ($this->rgsgConf['lightbox']) ? $this->cObj->IMG_RESOURCE($imgTSConfigLightbox) : 'javascript:void(0)';
-        $lightBoxImage = '<a href="' . $lightbox . '" title="Open Image" class="open"></a>';
 
         if ($this->rgsgConf['showThumbs']) {
             $imgTSConfigThumb = $this->rgsgConf['thumb.'];
@@ -224,13 +207,14 @@ class tx_rgsmoothgallery_fe
         // build the image element
         $singleImage .= '
 			<div class="imageElement">
-			' . $text . $lightBoxImage . '
+			' . $text . '
 			<img src="' . $bigImage . '" class="full" />
 			' . $thumbImage . '
 			</div>';
 
         return $singleImage;
     }
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rgsmoothgallery/class.tx_rgsmoothgallery_fe.php']) {

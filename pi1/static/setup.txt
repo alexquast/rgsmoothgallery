@@ -4,90 +4,64 @@ plugin.tx_rgsmoothgallery_pi1 {
     file.maxW = 100
     file.maxH = 75
   }
-  
+
   big = IMG_RESOURCE
   big {
     file.maxW = 460
     file.maxH = 345
   }
-  
+
   big2 = IMG_RESOURCE
   big2 {
-    file = GIFBUILDER 
-    file { 
-      XY = [10.w],[10.h] 
-      10=IMAGE 
-      10 {           
+    file = GIFBUILDER
+    file {
+      XY = [10.w],[10.h]
+      10=IMAGE
+      10 {
         file.maxW=460
         file.maxH=345
       }
-      20=TEXT 
+      20=TEXT
       20 {
-        text.data = date:Y 
-        text.noTrimWrap = |(c) | by somebody | 
-        align=right 
-        offset=0,[10.h]-45 
-        fontSize=10 
-        fontColor=#ffffff 
-        #niceText=1 
-      } 
-    } 
-  }     
+        text.data = date:Y
+        text.noTrimWrap = |(c) | by somebody |
+        align=right
+        offset=0,[10.h]-45
+        fontSize=10
+        fontColor=#ffffff
+        #niceText=1
+      }
+    }
+  }
 
   lightbox = IMG_RESOURCE
   lightbox {
     file.maxW = 800
     file.maxH = 600
   }
-  
-  lightbox2 = IMG_RESOURCE
-  lightbox2 {
-    file = GIFBUILDER 
-    file { 
-      XY = [10.w],[10.h] 
-      10=IMAGE 
-      10 {           
-        file.maxW=800
-        file.maxH=600
-      }
-      20=TEXT 
-      20 {
-        text.data = date:Y 
-        text.noTrimWrap = |(c) | by somebody | 
-        align=right 
-        offset=0,[10.h]-10 
-        fontSize=10 
-        fontColor=#ffffff 
-        #niceText=1 
-      } 
-    } 
-  }   
-  
+
   pathToMootools = EXT:rgsmoothgallery/res/scripts/mootools.js
   pathToJdgalleryJS = EXT:rgsmoothgallery/res/scripts/jd.gallery1010.js
   pathToJdgalleryCSS = EXT:rgsmoothgallery/res/css/jd.gallery.css
-  pathToSlightboxJS = EXT:rgsmoothgallery/res/scripts/slightbox107.js  
-  pathToSlightboxCSS = EXT:rgsmoothgallery/res/css/slightbox.css
   pathToJdgallerySetJS = EXT:rgsmoothgallery/res/scripts/jd.gallery.set.js
   pathToJdgalleryTransitionsJS = EXT:rgsmoothgallery/res/scripts/jd.gallery.transitions.js
-  
-  
+
+
   settings = {$plugin.tx_rgsmoothgallery.settings}
-  pid = 
+  pid =
   height = 230
   width = 330
   minimumImages = 2
   noscript = 1
   enableSaveButton = 0
   enablePrintButton = 0
-  
-  lightbox = 0
+
   showThumbs = 0
   arrows = 0
   hideInfoPane = 0
   thumbOpacity =
-  slideInfoZoneOpacity = 
-  thumbSpacing = 
+  slideInfoZoneOpacity =
+  thumbSpacing =
 }
 
 
@@ -100,9 +74,9 @@ temp.origpic < tt_content.textpic.20
 includeLibs.something2 = EXT:rgsmoothgallery/class.tx_rgsmoothgallery_rgsg.php
 
 temp.maxW = TEXT
-temp.maxW.field=imagewidth     
+temp.maxW.field=imagewidth
 temp.maxH = TEXT
-temp.maxH.field=imageheight    
+temp.maxH.field=imageheight
 
 temp.singleImage = COA
 temp.singleImage {
@@ -142,7 +116,7 @@ temp.singleImage {
          import.current = 1
         maxW < temp.maxW
         maxH < temp.maxH
-         
+
       }
       params = class="full"
    }
@@ -153,7 +127,7 @@ temp.singleImage {
          import = uploads/pics/
          import.current = 1
          maxW = {$plugin.tx_rgsmoothgallery.lightboxWidth}
-         maxH = {$plugin.tx_rgsmoothgallery.lightboxHeight}        
+         maxH = {$plugin.tx_rgsmoothgallery.lightboxHeight}
       }
       stdWrap.wrap = <a href="|" title="open image" class="open"></a>
    }
@@ -297,7 +271,7 @@ tt_content.newimage {
                      10.20.outerWrap.cObject.25 {
                         dataWrap = width:{register:singleimageWidth}px;
                      }
-                     
+
                   }
                }
                20 = LOAD_REGISTER
@@ -341,7 +315,7 @@ tt_content.newimage {
    }
    40 = TEXT
    40.data = register:imageLoader
-   40.required = 1   
+   40.required = 1
    40.outerWrap.cObject = COA
    40.outerWrap.cObject {
       10 = TEXT
@@ -349,7 +323,7 @@ tt_content.newimage {
       20 = TEXT
       20.dataWrap = width:{register:imageblockWidth}px;
       30 = TEXT
-      30.value = min-height:1px;      
+      30.value = min-height:1px;
       40 = CASE
       40 {
          key.field = imageorient
@@ -381,21 +355,21 @@ tt_content.newimage {
       77.dataWrap (
       <script type="text/javascript">
                 function startGallery{field:uid}()
-      ) 
+      )
       78 = TEXT
       78.value = {
-      
+
       79 = TEXT
       79.dataWrap (
                     var myGallery{field:uid} = new gallery($('myGallery{field:uid}'), |
-                    
+
         )
       79.value = {
-   
+
       80 = TEXT
       80.field = longdescURL
       80.ifEmpty = {$plugin.tx_rgsmoothgallery.settings}
-      80.wrap = | }); var mylightbox = new LightboxSmoothgallery(); }
+      80.wrap = | }); }
       81 = TEXT
       81.dataWrap (
                 window.onDomReady(startGallery{field:uid});
@@ -403,8 +377,8 @@ tt_content.newimage {
         <div class="content"><div class="myGallery" id="myGallery{field:uid}">
       )
 
-  
-      
+
+
       88= TEXT
       88.value = |</div></div>
 
@@ -412,8 +386,8 @@ tt_content.newimage {
     89.dataWrap (
         <div class="rgsmoothgallery-caption" style="text-align:{field:imagecaption_position};">{field:altText}</div></div>
     )
-         
-      
+
+
       90 = LOAD_REGISTER
       90 {
          imageblockWidth1.value =
@@ -443,7 +417,7 @@ tt_content.newimage {
          nextRow8.value =
       }
    }
-   
+
   # 99 = TEXT
   # 99.value =  </div></div>
 }

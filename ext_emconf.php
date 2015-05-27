@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
     'title' => 'SmoothGallery for TYPO3',
-    'description' => 'Slideshow & Gallery. Shows images from directory folders, from records and inside tt_content (Element "Text with images") DAM and tt_news. +Thumbnail-Browser, +Lightbox.',
+    'description' => 'Slideshow & Gallery. Shows images from directory folders, from records and inside tt_content (Element "Text with images") DAM and tt_news. +Thumbnail-Browser.',
     'category' => 'plugin',
     'shy' => 0,
     'version' => '1.6.1',

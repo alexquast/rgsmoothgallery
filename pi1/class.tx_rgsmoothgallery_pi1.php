@@ -67,9 +67,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
         // size of images, overwritten by flexforms
         $this->config['width'] = ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'width', 'sDEF')) ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'width', 'sDEF') : $this->conf['big.']['file.']['maxW'];
-        #  if ($this->config['width'])  $this->conf['big.']['file.']['maxW'] = $this->config['width'];
         $this->config['height'] = ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'height', 'sDEF')) ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'height', 'sDEF') : $this->conf['big.']['file.']['maxH'];
-        #  if ($this->config['height']) $this->conf['big.']['file.']['maxH'] = $this->config['height'];
 
 
         $this->config['heightGallery'] = intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'heightgallery', 'sDEF')) ? intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'heightgallery', 'sDEF')) : $this->conf['heightGallery'];
@@ -123,7 +121,6 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         $this->config['watermarks'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'watermark', 'advanced') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'watermark', 'advanced') : $this->conf['watermarks'];
         $this->config['limitImagesDisplayed'] = intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'limitImagesDisplayed', 'advanced')) ? intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'limitImagesDisplayed', 'advanced')) : intval($this->conf['limitImagesDisplayed']);
 
-        $this->config['lightbox'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'lightbox', 'advanced') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'lightbox', 'advanced') : $this->conf['lightbox'];
         $this->config['showThumbs'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showThumbs', 'advanced') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showThumbs', 'advanced') : $this->conf['showThumbs'];
         $this->config['showPlay'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showPlay', 'advanced') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showPlay', 'advanced') : $this->conf['showPlay'];
         $this->config['arrows'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'arrows', 'advanced') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'arrows', 'advanced') : $this->conf['arrows'];
@@ -170,7 +167,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         } else {
             // get the needed js to load the gallery and to start it
             $content .= $this->getJs(
-                    $this->config['lightbox'], $this->config['showThumbs'], $this->config['arrows'], $this->config['duration'], $this->config['width'], $this->config['height'], $this->config['widthGallery'], $this->config['heightGallery'], $this->config['advancedSettings'], $this->config['id'], $this->conf
+                    $this->config['showThumbs'], $this->config['arrows'], $this->config['duration'], $this->config['widthGallery'], $this->config['heightGallery'], $this->config['advancedSettings'], $this->config['id'], $this->conf
             );
 
             // depending on the chosen settings the images come from different places
@@ -275,7 +272,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
                 // add element to slideshow
                 $content .= $this->addImage(
-                        $path, $text[0], $text[1], $this->config['showThumbs'], $this->config['lightbox'], $path, $limitImages
+                        $path, $text[0], $text[1], $this->config['showThumbs'], $path, $limitImages
                 );
             } # end foreach file
 
@@ -328,7 +325,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
             // add element to slideshow
             $content .= $this->addImage(
-                    $path, $row['title'], $row['description'], $this->config['showThumbs'], $this->config['lightbox'], $path, $limitImages
+                    $path, $row['title'], $row['description'], $this->config['showThumbs'], $path, $limitImages
             );
         } # end foreach file
 
@@ -389,7 +386,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
             // add element to slideshow
             $content .= $this->addImage(
-                    $path, $row['title'], $row['description'], $this->config['showThumbs'], $this->config['lightbox'], $path, $limitImages
+                    $path, $row['title'], $row['description'], $this->config['showThumbs'], $path, $limitImages
             );
         }
 
@@ -440,7 +437,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
             // add element to slideshow
             $content .= $this->addImage(
-                    $path, $row['title'], nl2br($row['description']), $this->config['showThumbs'], $this->config['lightbox'], $path, $limitImages
+                    $path, $row['title'], nl2br($row['description']), $this->config['showThumbs'], $path, $limitImages
             );
         }
 
@@ -453,18 +450,15 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
      * Loads all the needed javascript stuff and
      * does the configuration of the gallery
      *
-     * @param	boolean  $lightboxVal: Lightbox activated=
      * @param	boolean  $thumbsVal: Thumbnail preview activated?
      * @param	boolean  $arrowsVal: Arrows to neighbour images activated?
      * @param	string   $durationVal: If automatic slideshow the value of the delay
-     * @param	int      $width: Width of gallery	 (depricated)
-     * @param	int      $height: Height of gallery (depricated)
      * @param	string   $advancedSettings: Advanced configuration
      * @param	string/int   $uniqueId: A unique ID to have more than 1 galleries on 1 page
      * $param array    $conf: $configuration-array
      * @return	The gallery
      */
-    public function getJs($lightboxVal, $thumbsVal, $arrowsVal, $durationVal, $width, $height, $widthGallery, $heightGallery, $advancedSettings, $uniqueId, $conf, $overrideJS = '')
+    public function getJs($thumbsVal, $arrowsVal, $durationVal, $widthGallery, $heightGallery, $advancedSettings, $uniqueId, $conf, $overrideJS = '')
     {
         $this->conf = $conf;
 
@@ -480,9 +474,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         // path to js + css
         $GLOBALS['TSFE']->additionalHeaderData['rgsmoothgallery'] = $header . '
         <script src="' . $this->getPath($this->conf['pathToJdgalleryJS']) . '" type="text/javascript"></script>
-        <script src="' . $this->getPath($this->conf['pathToSlightboxJS']) . '" type="text/javascript"></script>
         <link rel="stylesheet" href="' . $this->getPath($this->conf['pathToJdgalleryCSS']) . '" type="text/css" media="screen" />
-        <link rel="stylesheet" href="' . $this->getPath($this->conf['pathToSlightboxCSS']) . '" type="text/css" media="screen" />
       ';
 
         if ($this->config['externalControl'] == 1) {
@@ -506,7 +498,6 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         }
 
         // configuration of gallery
-        $lightbox = ($lightboxVal == 1) ? 'true' : 'false';
         $duration = ($durationVal) ? 'timed:true,delay: ' . $durationVal : 'timed:false';
         $thumbs = ($thumbsVal == 1) ? 'true' : 'false';
         $arrows = ($arrowsVal == 1) ? 'true' : 'false';
@@ -541,11 +532,9 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
     					      showArrows: ' . $arrows . ',
                   showCarousel: ' . $thumbs . ',
                   textShowCarousel: \'' . $this->pi_getLL('textShowCarousel') . '\',
-                  embedLinks:' . $lightbox . ',
+                  embedLinks: false,
                   ' . $advancedSettings . '
-    					    lightbox:true
     				    });
-    				    var mylightbox = new LightboxSmoothgallery();
     				    }catch(error){
     				    window.setTimeout("startGallery' . $uniqueId . '();",2500);
     				    }
@@ -607,12 +596,11 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
      * @param	string  $title: Title for the image
      * @param	string  $description: Description for the image
      * @param	string  $thumb: Url to the thumbnail image
-     * @param	string  $lightbox: Url to the lightbox image
      * @param	string  $uniqueID: Unique-ID to identify an image (uid or path)
      * @param	string  $limitImages: How many images to return; default=0 list all
      * @return	The single image
      */
-    public function addImage($path, $title, $description, $thumb, $lightbox, $uniqueID, $limitImages = 0)
+    private function addImage($path, $title, $description, $thumb, $uniqueID, $limitImages = 0)
     {
         // count of images
         if ($limitImages > 1 || $limitImages == 0) {
@@ -623,19 +611,11 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         if ($this->config['watermarks']) {
             $imgTSConfigBig = $this->conf['big2.'];
             $imgTSConfigBig['file.']['10.']['file'] = $path;
-            $imgTSConfigLightbox = $this->conf['lightbox2.'];
-            $imgTSConfigLightbox['file.']['10.']['file'] = $path;
         } else {
             $imgTSConfigBig = $this->conf['big.'];
             $imgTSConfigBig['file'] = $path;
-            $imgTSConfigLightbox = $this->conf['lightbox.'];
-            $imgTSConfigLightbox['file'] = $path;
         }
         $bigImage = $this->cObj->IMG_RESOURCE($imgTSConfigBig);
-
-        $lightbox = ($lightbox == '#' || $lightbox == '' || $this->config['lightbox'] != 1) ? 'javascript:void(0)' : $this->cObj->IMG_RESOURCE($imgTSConfigLightbox);
-        $lightbox = str_replace(' ', '%20', $lightbox); // search for empty chars, thx maxhb
-        $lightBoxImage = '<a href="' . $lightbox . '" title="' . $this->pi_getLL('textOpenImage') . '" class="open"></a>';
 
         if ($thumb) {
             $imgTSConfigThumb = $this->conf['thumb.'];
@@ -643,11 +623,8 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
             $thumbImage = '<img src="' . $this->cObj->IMG_RESOURCE($imgTSConfigThumb) . '" class="thumbnail" />';
         }
 
-        // just add the wraps if there is a text for it or if there is no lightbox which needs the title of course!
-        if ($this->config['hideInfoPane'] != 1 || $lightbox != 'javascript:void(0)') {
-            $text = (!$title) ? '' : "<h3>$title</h3>";
-            $text .= (!$description) ? '' : "<p>$description</p>";
-        }
+        $text = (!$title) ? '' : "<h3>$title</h3>";
+        $text .= (!$description) ? '' : "<p>$description</p>";
 
         // if just 1 image should be returned
         if ($limitImages == 1) {
@@ -656,7 +633,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
         // build the image element
         $singleImage .= '
-      <div class="imageElement">' . $text . $lightBoxImage . '
+      <div class="imageElement">' . $text . '
         <img src="' . $bigImage . '" class="full" />
         ' . $thumbImage . '
       </div>';
@@ -667,9 +644,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         $config['description'] = $description;
         $config['uniqueID'] = $uniqueID;
         $config['thumb'] = $thumb;
-        $config['lightbox'] = $lightbox;
         $config['limitImages'] = $limitImages;
-        $config['lightBoxCode'] = $lightBoxImage;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraImageHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraImageHook'] as $_classRef) {
                 $_procObj = & t3lib_div::getUserObj($_classRef);
@@ -1014,6 +989,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
         return '';
     }
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rgsmoothgallery/pi1/class.tx_rgsmoothgallery_pi1.php']) {

@@ -1,7 +1,7 @@
 {
     "name": "ecodev/rgsmoothgallery",
     "type": "typo3-cms-extension",
-    "description": "Slideshow & Gallery. Shows images from directory folders, from records and inside tt_content (Element 'Text with images') DAM and tt_news. +Thumbnail-Browser, +Lightbox.",
+    "description": "Slideshow & Gallery. Shows images from directory folders, from records and inside tt_content (Element 'Text with images') DAM and tt_news. +Thumbnail-Browser.",
     "homepage": "https://github.com/ecodev/rgsmoothgallery",
     "license": "GPL-2.0+",
     "keywords": ["TYPO3 CMS", "slider", "slideshow", "gallery"]

@@ -1,6 +1,6 @@
 plugin.tx_rgsmoothgallery {
 # cat=SmoothGallery/Settings/;type=text; label= Settings for SmoothGallery
-settings = timed:false,showArrows: true,showCarousel: true,embedLinks:true,lightbox:true,textShowCarousel:'Thumbnails'
+settings = timed:false,showArrows: true,showCarousel: true,embedLinks:true,textShowCarousel:'Thumbnails'
 
 # cat=SmoothGallery/Sizes/;type=text; label= Max Width for lightbox in tt_content
 lightboxWidth = 700

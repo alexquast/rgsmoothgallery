@@ -38,9 +38,7 @@ class tx_rgsmoothgallery_rgsg
 
         $GLOBALS['TSFE']->additionalHeaderData['rgsmoothgallery'] = $header . '
         <script src="' . $this->getPath($this->conf['pathToJdgalleryJS']) . '" type="text/javascript"></script>
-        <script src="' . $this->getPath($this->conf['pathToSlightboxJS']) . '" type="text/javascript"></script>
         <link rel="stylesheet" href="' . $this->getPath($this->conf['pathToJdgalleryCSS']) . '" type="text/css" media="screen" />
-        <link rel="stylesheet" href="' . $this->getPath($this->conf['pathToSlightboxCSS']) . '" type="text/css" media="screen" />
       ';
 
         return $content;
