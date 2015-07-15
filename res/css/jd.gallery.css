@@ -1,5 +1,6 @@
 .tx-rgsmoothgallery-pi1 {
-    background:#000 url(img/loading-bar-black.gif) center center no-repeat;
+	background:#000 url(img/loading-bar-black.gif) center center no-repeat;
+	width:100% !important;
 }
 #myGallery, #myGallerySet, #flickrGallery
 {
@@ -12,6 +13,10 @@
 .jdGallery a
 {
 	outline:0;
+}
+
+.jdGallery .slideElement {
+	background-size: contain;
 }
 
 #flickrGallery
@@ -29,6 +34,7 @@
 {
 	overflow: hidden;
 	position: relative;
+	width:100% !important;
 }
 
 .jdGallery img
@@ -148,7 +154,6 @@
 {
 	position: absolute;
 	width: 100%;
-	height: 78px;
 	top: 10px;
 	left: 0;
 	overflow: hidden;
