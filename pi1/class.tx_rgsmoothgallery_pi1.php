@@ -69,7 +69,6 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         $this->config['width'] = ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'width', 'sDEF')) ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'width', 'sDEF') : $this->conf['big.']['file.']['maxW'];
         $this->config['height'] = ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'height', 'sDEF')) ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'height', 'sDEF') : $this->conf['big.']['file.']['maxH'];
 
-
         $this->config['heightGallery'] = intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'heightgallery', 'sDEF')) ? intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'heightgallery', 'sDEF')) : $this->conf['heightGallery'];
         $this->config['widthGallery'] = intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'widthgallery', 'sDEF')) ? intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'widthgallery', 'sDEF')) : $this->conf['widthGallery'];
 
@@ -984,5 +983,4 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
         return '';
     }
-
 }

@@ -210,5 +210,4 @@ class tx_rgsmoothgallery_fe
 
         return $singleImage;
     }
-
 }
