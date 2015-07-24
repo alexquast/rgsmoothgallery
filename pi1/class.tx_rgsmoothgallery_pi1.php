@@ -30,7 +30,7 @@
  * @package	TYPO3
  * @subpackage	tx_rgsmoothgallery
  */
-class tx_rgsmoothgallery_pi1 extends tslib_pibase
+class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
     public $prefixId = 'tx_rgsmoothgallery_pi1'; // Same as class name
     public $scriptRelPath = 'pi1/class.tx_rgsmoothgallery_pi1.php'; // Path to this script relative to the extension dir.
@@ -197,7 +197,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraBeginGalleryHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraBeginGalleryHook'] as $_classRef) {
-                $_procObj = & t3lib_div::getUserObj($_classRef);
+                $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
                 $content = $_procObj->extraBeginGalleryProcessor($content, $limitImages, $this);
             }
         }
@@ -216,7 +216,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         $content = '</div></div>';
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraEndGalleryHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraEndGalleryHook'] as $_classRef) {
-                $_procObj = & t3lib_div::getUserObj($_classRef);
+                $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
                 $content = $_procObj->extraEndGalleryProcessor($content, $this);
             }
         }
@@ -264,7 +264,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
 
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraGetImagesDirectoryHook'])) {
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraGetImagesDirectoryHook'] as $_classRef) {
-                        $_procObj = & t3lib_div::getUserObj($_classRef);
+                        $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
                         $text = $_procObj->extraGetImagesDirectoryHook($text, $this->config['startingpoint'] . $value, $this);
                     }
                 }
@@ -461,8 +461,8 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
     {
         $this->conf = $conf;
 
-        if (t3lib_extMgm::isLoaded('t3mootools')) {
-            require_once t3lib_extMgm::extPath('t3mootools') . 'class.tx_t3mootools.php';
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3mootools')) {
+            require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3mootools') . 'class.tx_t3mootools.php';
         }
         if (defined('T3MOOTOOLS')) {
             tx_t3mootools::addMooJS();
@@ -575,7 +575,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         // hook
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraDifferentPlaces'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraDifferentPlaces'] as $_classRef) {
-                $_procObj = & t3lib_div::getUserObj($_classRef);
+                $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
                 $content = $_procObj->extraBeginGalleryProcessor($content, $limitImages, $this);
             }
         }
@@ -641,7 +641,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         $config['limitImages'] = $limitImages;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraImageHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraImageHook'] as $_classRef) {
-                $_procObj = & t3lib_div::getUserObj($_classRef);
+                $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
                 $singleImage = $_procObj->extraImageProcessor($singleImage, $config, $this);
             }
         }
@@ -707,7 +707,7 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
         if (substr($path, 0, 4) == 'EXT:') {
             $keyEndPos = strpos($path, '/', 6);
             $key = substr($path, 4, $keyEndPos - 4);
-            $keyPath = t3lib_extMgm::siteRelpath($key);
+            $keyPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelpath($key);
             $newPath = $keyPath . substr($path, $keyEndPos + 1);
 
             return $newPath;
@@ -857,13 +857,13 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
      */
     public function readExif($image)
     {
-        if (!t3lib_div::isAbsPath($image)) {
-            $image = t3lib_div::getFileAbsFileName($image);
+        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($image)) {
+            $image = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image);
         }
 
         $data = array('title' => '', 'description' => '', 'author' => '');
 
-        if (!t3lib_div::inArray(get_loaded_extensions(), 'exif') || $this->conf['exif'] != 1) { // If there is no EXIF Support at your installation
+        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inArray(get_loaded_extensions(), 'exif') || $this->conf['exif'] != 1) { // If there is no EXIF Support at your installation
             return $data;
         }
 
@@ -892,8 +892,8 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
      */
     public function readIptc($image)
     {
-        if (!t3lib_div::isAbsPath($image)) {
-            $image = t3lib_div::getFileAbsFileName($image);
+        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($image)) {
+            $image = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image);
         }
 
         $data = array('title' => '', 'description' => '', 'author' => '');
@@ -933,8 +933,8 @@ class tx_rgsmoothgallery_pi1 extends tslib_pibase
      */
     public function readTextComment($image)
     {
-        if (!t3lib_div::isAbsPath($image)) {
-            $image = t3lib_div::getFileAbsFileName($image);
+        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($image)) {
+            $image = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image);
         }
 
         $data = array('title' => '', 'description' => '', 'author' => '');

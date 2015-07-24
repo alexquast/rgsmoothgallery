@@ -33,7 +33,7 @@ class tx_rgsmoothgallery_fe
     // hook for tt_news
     public function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj)
     {
-        $this->cObj = t3lib_div::makeInstance('tslib_cObj'); // local cObj.
+        $this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'); // local cObj.
         $this->pObj = &$pObj;
         $this->realConf = $pObj;
 
@@ -42,12 +42,12 @@ class tx_rgsmoothgallery_fe
 
         // merge with special configuration (based on chosen CODE [SINGLE, LIST, LATEST]) if this is available
         if (is_array($rgsgConfDefault[$pObj->config['code'] . '.'])) {
-            $rgsgConf = t3lib_div::array_merge_recursive_overrule($rgsgConfDefault, $rgsgConfDefault[$pObj->config['code'] . '.']);
+            $rgsgConf = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($rgsgConfDefault, $rgsgConfDefault[$pObj->config['code'] . '.']);
         } else {
             $rgsgConf = $rgsgConfDefault;
         }
 
-        #echo t3lib_div::view_array($rgsgConf);
+        #echo \TYPO3\CMS\Core\Utility\GeneralUtility::view_array($rgsgConf);
         $this->rgsgConf = $rgsgConf;
         // if the configuration is available, otherwise just do nothing
         if ($rgsgConf) {
@@ -78,8 +78,8 @@ class tx_rgsmoothgallery_fe
             // If there are any images and minimum count of images is reached
             if ($row[$imageField] && count($images) >= $rgsgConf['minimumImages']) {
                 // call rgsmoothgallery
-                require_once t3lib_extMgm::extPath('rgsmoothgallery') . 'pi1/class.tx_rgsmoothgallery_pi1.php';
-                $this->gallery = t3lib_div::makeInstance('tx_rgsmoothgallery_pi1');
+                require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rgsmoothgallery') . 'pi1/class.tx_rgsmoothgallery_pi1.php';
+                $this->gallery = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_rgsmoothgallery_pi1');
 
                 // if no js is available
                 $noJsImg = $rgsgConf['big.'];
