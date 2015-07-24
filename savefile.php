@@ -34,16 +34,14 @@ define('PATH_thisScript', str_replace('//', '/', str_replace('\\', '/', (php_sap
 define('PATH_site', ereg_replace('[^/]*.[^/]*$', '', dirname(dirname(PATH_thisScript))));
 define('PATH_typo3', PATH_site . 'typo3/');
 define('PATH_typo3conf', PATH_site . 'typo3conf/');
-define('PATH_t3lib', PATH_site . 't3lib/');
-require_once PATH_t3lib . 'class.t3lib_div.php';
 
 $image = $_GET['image'];
 
 // remove domain if it is prepended
-$image = str_replace(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '', $image);
-$allowedExtensions = t3lib_div::trimExplode(',', (strlen($TYPO3_CONF_VARS['GFX']['imagefile_ext']) > 0 ? $TYPO3_CONF_VARS['GFX']['imagefile_ext'] : 'gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai'), 1);
+$image = str_replace(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '', $image);
+$allowedExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', (strlen($TYPO3_CONF_VARS['GFX']['imagefile_ext']) > 0 ? $TYPO3_CONF_VARS['GFX']['imagefile_ext'] : 'gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai'), 1);
 $imageInfo = pathinfo($image);
-if (!is_file(t3lib_div::getFileAbsFileName($image)) || !in_array(strtolower($imageInfo['extension']), $allowedExtensions)) {
+if (!is_file(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image)) || !in_array(strtolower($imageInfo['extension']), $allowedExtensions)) {
     die('You try to download a file, you are not allowed to download');
 }
 
@@ -86,7 +84,7 @@ function force_download($filename, $mimetype = '')
 {
     $filenameOrig = $filename;
 #	$filename = str_replace(,PATH_site,$filename);
-    $filename = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $filename;
+    $filename = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $filename;
     #if (!file_exists($filename)) return false;
     // Mimetype not set?
     if (empty($mimetype)) {

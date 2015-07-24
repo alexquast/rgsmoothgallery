@@ -4,26 +4,26 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-t3lib_div::loadTCA('tt_content');
+//\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi1'] = 'layout,select_key,pages';
 
-t3lib_extMgm::addPlugin(array('LLL:EXT:rgsmoothgallery/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY . '_pi1'), 'list_type');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:rgsmoothgallery/locallang_db.xml:tt_content.list_type_pi1', $_EXTKEY . '_pi1'), 'list_type');
 
-t3lib_extMgm::addStaticFile($_EXTKEY, "pi1/static/", "SmoothGallery");
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, "pi1/static/", "SmoothGallery");
 
 // Flexforms
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi1'] = 'pi_flexform';
-if (t3lib_extMgm::isLoaded('dam')) {
-    t3lib_extMgm::addPiFlexFormValue('rgsmoothgallery_pi1', 'FILE:EXT:rgsmoothgallery/flexformDAM_ds.xml');
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dam')) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('rgsmoothgallery_pi1', 'FILE:EXT:rgsmoothgallery/flexformDAM_ds.xml');
 } else {
-    t3lib_extMgm::addPiFlexFormValue('rgsmoothgallery_pi1', 'FILE:EXT:rgsmoothgallery/flexform_ds.xml');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('rgsmoothgallery_pi1', 'FILE:EXT:rgsmoothgallery/flexform_ds.xml');
 }
 
 if (TYPO3_MODE == "BE") {
-    $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_rgsmoothgallery_pi1_wizicon"] = t3lib_extMgm::extPath($_EXTKEY) . 'pi1/class.tx_rgsmoothgallery_pi1_wizicon.php';
+    $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_rgsmoothgallery_pi1_wizicon"] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi1/class.tx_rgsmoothgallery_pi1_wizicon.php';
 }
 
-t3lib_extMgm::allowTableOnStandardPages('tx_rgsmoothgallery_image');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_rgsmoothgallery_image');
 
 $TCA["tx_rgsmoothgallery_image"] = array(
     "ctrl" => array(
@@ -40,8 +40,8 @@ $TCA["tx_rgsmoothgallery_image"] = array(
         'enablecolumns' => array(
             'disabled' => 'hidden',
         ),
-        'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
-        'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'icon_tx_rgsmoothgallery_image.gif',
+        'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
+        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icon_tx_rgsmoothgallery_image.gif',
     ),
     "feInterface" => array(
         "fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, title, description, image",
@@ -57,13 +57,13 @@ $tempColumns = array(
         ),
     ),
 );
-t3lib_div::loadTCA("tt_content");
-t3lib_extMgm::addTCAcolumns("tt_content", $tempColumns, 1);
+//\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA("tt_content");
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("tt_content", $tempColumns);
 
 $GLOBALS['TCA']['tt_content']['palettes']['7']['showitem'] .= ',tx_rgsmoothgallery_rgsg';
 
 /*
-  t3lib_div::loadTCA("tt_content");
-  t3lib_extMgm::addTCAcolumns("tt_content",$tempColumns,1);
+  \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA("tt_content");
+  t3lib_extMgm::addTCAcolumns("tt_content",$tempColumns);
   t3lib_extMgm::addToAllTCAtypes("tt_content","tx_rgsmoothgallery_rgsg;;;;1-1-1");
  */;

@@ -4,9 +4,9 @@ class tx_rgsmoothgallery_rgsg
 {
     public function user_rgsg($content, $conf)
     {
-        $sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
+        $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
         $rootLine = $sysPageObj->getRootLine($GLOBALS['TSFE']->id);
-        $TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
+        $TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
         $TSObj->tt_track = 0;
         $TSObj->init();
         $TSObj->runThroughTemplates($rootLine);
@@ -24,8 +24,8 @@ class tx_rgsmoothgallery_rgsg
         $css .= ($row['imageheight']) ? 'height:' . $row['imageheight'] . 'px;' : '';
         $GLOBALS['TSFE']->additionalCSS['rgsmoothgallery' . $id] = '#myGallery' . $id . ' {' . $css . '}';
 
-        if (t3lib_extMgm::isLoaded('t3mootools')) {
-            require_once t3lib_extMgm::extPath('t3mootools') . 'class.tx_t3mootools.php';
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3mootools')) {
+            require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3mootools') . 'class.tx_t3mootools.php';
         }
 
         if (defined('T3MOOTOOLS')) {
@@ -50,7 +50,7 @@ class tx_rgsmoothgallery_rgsg
         if (substr($path, 0, 4) == 'EXT:') {
             $keyEndPos = strpos($path, '/', 6);
             $key = substr($path, 4, $keyEndPos - 4);
-            $keyPath = t3lib_extMgm::siteRelpath($key);
+            $keyPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelpath($key);
             $newPath = $keyPath . substr($path, $keyEndPos + 1);
 
             return $newPath;
