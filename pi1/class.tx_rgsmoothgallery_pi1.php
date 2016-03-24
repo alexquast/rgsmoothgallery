@@ -26,11 +26,11 @@
 /**
  * Plugin 'SmoothGallery' for the 'rgsmoothgallery' extension.
  *
- * @author	Georg Ringer <http://www.just2b.com>
- * @package	TYPO3
- * @subpackage	tx_rgsmoothgallery
+ * @author  Georg Ringer <http://www.just2b.com>
+ * @package TYPO3
+ * @subpackage  tx_rgsmoothgallery
  */
-class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+class tx_rgsmoothgallery_pi1 extends tslib_pibase
 {
     public $prefixId = 'tx_rgsmoothgallery_pi1'; // Same as class name
     public $scriptRelPath = 'pi1/class.tx_rgsmoothgallery_pi1.php'; // Path to this script relative to the extension dir.
@@ -40,7 +40,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Just some intialization, mainly reading the settings in the flexforms
      *
-     * @param	array		$conf: The PlugIn configuration
+     * @param   array       $conf: The PlugIn configuration
      */
     public function init($conf)
     {
@@ -68,6 +68,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // size of images, overwritten by flexforms
         $this->config['width'] = ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'width', 'sDEF')) ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'width', 'sDEF') : $this->conf['big.']['file.']['maxW'];
         $this->config['height'] = ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'height', 'sDEF')) ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'height', 'sDEF') : $this->conf['big.']['file.']['maxH'];
+
 
         $this->config['heightGallery'] = intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'heightgallery', 'sDEF')) ? intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'heightgallery', 'sDEF')) : $this->conf['heightGallery'];
         $this->config['widthGallery'] = intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'widthgallery', 'sDEF')) ? intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'widthgallery', 'sDEF')) : $this->conf['widthGallery'];
@@ -149,9 +150,9 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * The main method of the PlugIn
      * for showing the SmoothGallery
      *
-     * @param	string		$content: The PlugIn content
-     * @param	array		$conf: The PlugIn configuration
-     * @return	The gallery
+     * @param   string      $content: The PlugIn content
+     * @param   array       $conf: The PlugIn configuration
+     * @return  The gallery
      */
     public function main($content, $conf)
     {
@@ -181,15 +182,17 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Just some divs needed for the gallery
      *
-     * @param	string/int   $uniqueId: A unique ID to have more than 1 galleries on 1 page
-     * @return	The opened divs
+     * @param   string/int   $uniqueId: A unique ID to have more than 1 galleries on 1 page
+     * @return  The opened divs
      */
-    public function beginGallery($uniqueId, $limitImages = 0)
+    public function beginGallery($uniqueId, $limitImages = 0, $imagePath)
+
     {
+        //echo '<script>console.log("' . $foo . '")</script>';
         if ($limitImages == 1) {
-            $content = '<div class="rgsgcontent"><div class="myGallery-NoScript" id="myGallery-NoScript' . $uniqueId . '">';
+            $content = '<div class="rgsgcontent" data-image-path="' . $imagePath .'"><div class="myGallery-NoScript" id="myGallery-NoScript' . $uniqueId . '">';
         } else {
-            $content = '<div class="rgsgcontent"><div class="myGallery" id="myGallery' . $uniqueId . '">';
+            $content = '<div class="rgsgcontent" data-image-path="' . $imagePath .'"><div class="myGallery" id="myGallery' . $uniqueId . '">';
         }
 
         // Save button && Print button
@@ -197,7 +200,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraBeginGalleryHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraBeginGalleryHook'] as $_classRef) {
-                $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
+                $_procObj = & t3lib_div::getUserObj($_classRef);
                 $content = $_procObj->extraBeginGalleryProcessor($content, $limitImages, $this);
             }
         }
@@ -209,14 +212,14 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Just some divs needed for the gallery
      *
-     * @return	The closed divs
+     * @return  The closed divs
      */
     public function endGallery()
     {
         $content = '</div></div>';
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraEndGalleryHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraEndGalleryHook'] as $_classRef) {
-                $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
+                $_procObj = & t3lib_div::getUserObj($_classRef);
                 $content = $_procObj->extraEndGalleryProcessor($content, $this);
             }
         }
@@ -228,8 +231,8 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * get the images out of a directory
      *
-     * @param	int		$limitImages: How many images to return; default=0 list all
-     * @return	image(s)
+     * @param   int     $limitImages: How many images to return; default=0 list all
+     * @return  image(s)
      */
     public function getImagesDirectory($limitImages = 0)
     {
@@ -242,8 +245,9 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             if ($limitImages > 0) {
                 $images = $this->getSlicedRandomArray($images, 0, $limitImages);
             }
-
-            $content .= $this->beginGallery($this->config['id'], $limitImages);
+            // ADDED!
+            // pass the path to the original images also
+            $content .= $this->beginGallery($this->config['id'], $limitImages, $this->config['startingpoint']);
 
             // read the description from field in flexforms
             if ($this->config['text'] != '') {
@@ -253,7 +257,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // add the images
             foreach ($images as $key => $value) {
                 $path = $this->config['startingpoint'] . $value;
-
+                //echo "<script>console.log('" . $this . "')</script>";
                 // caption text
                 if ($caption[$key]) {
                     $text = explode($this->config['splitComment'], $caption[$key]);
@@ -264,7 +268,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraGetImagesDirectoryHook'])) {
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraGetImagesDirectoryHook'] as $_classRef) {
-                        $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
+                        $_procObj = & t3lib_div::getUserObj($_classRef);
                         $text = $_procObj->extraGetImagesDirectoryHook($text, $this->config['startingpoint'] . $value, $this);
                     }
                 }
@@ -285,8 +289,8 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * get the images out of records a user created in the backend before
      *
-     * @param	int		$limitImages: How many images to return; default=0 list all
-     * @return	image(s)
+     * @param   int     $limitImages: How many images to return; default=0 list all
+     * @return  image(s)
      */
     public function getImagesRecords($limitImages = 0)
     {
@@ -321,7 +325,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
 
             $path = 'uploads/tx_rgsmoothgallery/' . $row['image'];
-
+            //$content .="<script>alert(1); console.log('" . $path ."'')</script>";
             // add element to slideshow
             $content .= $this->addImage(
                     $path, $row['title'], $row['description'], $this->config['showThumbs'], $path, $limitImages
@@ -338,8 +342,8 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * get the images out of DAM
      *
-     * @param	int		$limitImages: How many images to return; default=0 list all
-     * @return	image(s)
+     * @param   int     $limitImages: How many images to return; default=0 list all
+     * @return  image(s)
      */
     public function getImagesDam($limitImages = 0)
     {
@@ -398,8 +402,8 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * get the images out of DAM
      *
-     * @param	int		$limitImages: How many images to return; default=0 list all
-     * @return	image(s)
+     * @param   int     $limitImages: How many images to return; default=0 list all
+     * @return  image(s)
      */
     public function getImagesDamCat($limitImages = 0)
     {
@@ -449,20 +453,20 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * Loads all the needed javascript stuff and
      * does the configuration of the gallery
      *
-     * @param	boolean  $thumbsVal: Thumbnail preview activated?
-     * @param	boolean  $arrowsVal: Arrows to neighbour images activated?
-     * @param	string   $durationVal: If automatic slideshow the value of the delay
-     * @param	string   $advancedSettings: Advanced configuration
-     * @param	string/int   $uniqueId: A unique ID to have more than 1 galleries on 1 page
+     * @param   boolean  $thumbsVal: Thumbnail preview activated?
+     * @param   boolean  $arrowsVal: Arrows to neighbour images activated?
+     * @param   string   $durationVal: If automatic slideshow the value of the delay
+     * @param   string   $advancedSettings: Advanced configuration
+     * @param   string/int   $uniqueId: A unique ID to have more than 1 galleries on 1 page
      * $param array    $conf: $configuration-array
-     * @return	The gallery
+     * @return  The gallery
      */
     public function getJs($thumbsVal, $arrowsVal, $durationVal, $widthGallery, $heightGallery, $advancedSettings, $uniqueId, $conf, $overrideJS = '')
     {
         $this->conf = $conf;
 
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3mootools')) {
-            require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3mootools') . 'class.tx_t3mootools.php';
+        if (t3lib_extMgm::isLoaded('t3mootools')) {
+            require_once t3lib_extMgm::extPath('t3mootools') . 'class.tx_t3mootools.php';
         }
         if (defined('T3MOOTOOLS')) {
             tx_t3mootools::addMooJS();
@@ -521,8 +525,8 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $js = $overrideJS;
         } else {
             $js .= '
-    		<script type="text/javascript">' . $externalControl1 . '
-    			function startGallery' . $uniqueId . '() {
+            <script type="text/javascript">' . $externalControl1 . '
+                function startGallery' . $uniqueId . '() {
                     if(window.gallery' . $uniqueId . ') {
                         ' . $externalControl2 . ' myGallery' . $uniqueId . ' = new gallery($(\'myGallery' . $uniqueId . '\'), {
                         ' . $duration . ',
@@ -543,11 +547,11 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
                 }
                 window.addEvent("domready", startGallery' . $uniqueId . ');
-    		</script>';
+            </script>';
             if ($this->conf['noscript'] == 1) {
                 $js .= '<noscript>
-    		' . $this->getImageDifferentPlaces(1) . '
-    		</noscript>';
+            ' . $this->getImageDifferentPlaces(1) . '
+            </noscript>';
             }
         }
 
@@ -557,8 +561,8 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * depending on the chosen settings the images come from different places
      *
-     * @param	string  $limitImages: How many images to return; default=0 list all
-     * @return	The image(s)
+     * @param   string  $limitImages: How many images to return; default=0 list all
+     * @return  The image(s)
      */
     public function getImageDifferentPlaces($limitImages = 0)
     {
@@ -575,7 +579,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // hook
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraDifferentPlaces'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraDifferentPlaces'] as $_classRef) {
-                $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
+                $_procObj = & t3lib_div::getUserObj($_classRef);
                 $content = $_procObj->extraBeginGalleryProcessor($content, $limitImages, $this);
             }
         }
@@ -586,13 +590,13 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Adds a single image to the gallery
      *
-     * @param	string  $path: Path to the image
-     * @param	string  $title: Title for the image
-     * @param	string  $description: Description for the image
-     * @param	string  $thumb: Url to the thumbnail image
-     * @param	string  $uniqueID: Unique-ID to identify an image (uid or path)
-     * @param	string  $limitImages: How many images to return; default=0 list all
-     * @return	The single image
+     * @param   string  $path: Path to the image
+     * @param   string  $title: Title for the image
+     * @param   string  $description: Description for the image
+     * @param   string  $thumb: Url to the thumbnail image
+     * @param   string  $uniqueID: Unique-ID to identify an image (uid or path)
+     * @param   string  $limitImages: How many images to return; default=0 list all
+     * @return  The single image
      */
     private function addImage($path, $title, $description, $thumb, $uniqueID, $limitImages = 0)
     {
@@ -627,7 +631,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // build the image element
         $singleImage .= '
-      <div class="imageElement">' . $text . '
+      <div class="imageElement" data-org="'.$path.'">' . $text . '
         <img src="' . $bigImage . '" class="full" />
         ' . $thumbImage . '
       </div>';
@@ -641,18 +645,17 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $config['limitImages'] = $limitImages;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraImageHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rgsmoothgallery']['extraImageHook'] as $_classRef) {
-                $_procObj = & \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
+                $_procObj = & t3lib_div::getUserObj($_classRef);
                 $singleImage = $_procObj->extraImageProcessor($singleImage, $config, $this);
             }
         }
-
         return $singleImage;
     }
 
     /**
      * Gets all image files out of a directory
      *
-     * @param	string  $path: Path to the directory
+     * @param   string  $path: Path to the directory
      * @return Array with the images
      */
     public function getFiles($path, $extra = "")
@@ -699,7 +702,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Gets the path to a file, needed to translate the 'EXT:extkey' into the real path
      *
-     * @param	string  $path: Path to the file
+     * @param   string  $path: Path to the file
      * @return the real path
      */
     public function getPath($path)
@@ -707,7 +710,7 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (substr($path, 0, 4) == 'EXT:') {
             $keyEndPos = strpos($path, '/', 6);
             $key = substr($path, 4, $keyEndPos - 4);
-            $keyPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelpath($key);
+            $keyPath = t3lib_extMgm::siteRelpath($key);
             $newPath = $keyPath . substr($path, $keyEndPos + 1);
 
             return $newPath;
@@ -720,9 +723,9 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Random view of an array and slice it afterwards, preserving the keys
      *
-     * @param	array  $array: Array to modify
-     * @param	array  $offset: Where to start the slicing
-     * @param	array  $length: Length of the sliced array
+     * @param   array  $array: Array to modify
+     * @param   array  $offset: Where to start the slicing
+     * @param   array  $length: Length of the sliced array
      * @return the randomized and sliced array
      */
     public function getSlicedRandomArray($array, $offset, $length)
@@ -764,9 +767,9 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * get a list of recursive categories
      *
-     * @param	string		$id: comma seperated list of ids
-     * @param	int		$level: the level for recursion
-     * @return	image(s)
+     * @param   string      $id: comma seperated list of ids
+     * @param   int     $level: the level for recursion
+     * @return  image(s)
      */
     public function getRecursiveDamCat($id, $level = 0)
     {
@@ -798,10 +801,10 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Get the value out of the flexforms and if empty, take if from TS
      *
-     * @param	string		$sheet: The sheed of the flexforms
-     * @param	string		$key: the name of the flexform field
-     * @param	string		$confOverride: The value of TS for an override
-     * @return	string	The value of the locallang.xml
+     * @param   string      $sheet: The sheed of the flexforms
+     * @param   string      $key: the name of the flexform field
+     * @param   string      $confOverride: The value of TS for an override
+     * @return  string  The value of the locallang.xml
      */
     public function getFlexform($sheet, $key, $confOverride = '')
     {
@@ -822,8 +825,8 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Read data from an image or an associated text file.
      *
-     * @param	string		$image: path to the image
-     * @return	array		title, description and author
+     * @param   string      $image: path to the image
+     * @return  array       title, description and author
      */
     public function readImageInfo($image)
     {
@@ -852,18 +855,18 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Read EXIF data from an image.
      *
-     * @param	string		$image: path to the image
-     * @return	array		title, description and author
+     * @param   string      $image: path to the image
+     * @return  array       title, description and author
      */
     public function readExif($image)
     {
-        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($image)) {
-            $image = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image);
+        if (!t3lib_div::isAbsPath($image)) {
+            $image = t3lib_div::getFileAbsFileName($image);
         }
 
         $data = array('title' => '', 'description' => '', 'author' => '');
 
-        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inArray(get_loaded_extensions(), 'exif') || $this->conf['exif'] != 1) { // If there is no EXIF Support at your installation
+        if (!t3lib_div::inArray(get_loaded_extensions(), 'exif') || $this->conf['exif'] != 1) { // If there is no EXIF Support at your installation
             return $data;
         }
 
@@ -887,13 +890,13 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Read IPTC data from an image.
      *
-     * @param	string		$image: path to the image
-     * @return	array		title, description and author
+     * @param   string      $image: path to the image
+     * @return  array       title, description and author
      */
     public function readIptc($image)
     {
-        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($image)) {
-            $image = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image);
+        if (!t3lib_div::isAbsPath($image)) {
+            $image = t3lib_div::getFileAbsFileName($image);
         }
 
         $data = array('title' => '', 'description' => '', 'author' => '');
@@ -928,13 +931,13 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * {{author}}
      * </pre>
      *
-     * @param	string		$image: path to the image
-     * @return	array		title, description and author
+     * @param   string      $image: path to the image
+     * @return  array       title, description and author
      */
     public function readTextComment($image)
     {
-        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($image)) {
-            $image = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($image);
+        if (!t3lib_div::isAbsPath($image)) {
+            $image = t3lib_div::getFileAbsFileName($image);
         }
 
         $data = array('title' => '', 'description' => '', 'author' => '');
@@ -960,11 +963,11 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * returned. If keys are null then it returns the first
      * non-empty element.
      *
-     * @param	array		$array: array whose content should be extracted
-     * @param	mixed		key1
-     * @param	mixed		key2
-     * @param	mixed		...
-     * @return	string
+     * @param   array       $array: array whose content should be extracted
+     * @param   mixed       key1
+     * @param   mixed       key2
+     * @param   mixed       ...
+     * @return  string
      */
     public function getPrioritizedContent($array)
     {
@@ -983,4 +986,9 @@ class tx_rgsmoothgallery_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         return '';
     }
+
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rgsmoothgallery/pi1/class.tx_rgsmoothgallery_pi1.php']) {
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rgsmoothgallery/pi1/class.tx_rgsmoothgallery_pi1.php'];
 }

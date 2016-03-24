@@ -56,7 +56,7 @@ var gallery = {
         fadeDuration: 500,
         timed: false,
         delay: 9000,
-        preloader: true,
+        preloader: false,
         preloaderImage: true,
         preloaderErrorImage: true,
         /* Data retrieval */
@@ -173,6 +173,7 @@ var gallery = {
         element.getElements(options.elementSelector).each(function(el) {
             elementDict = $H({
                 image: el.getElement(options.imageSelector).getProperty('src'),
+                org: el.getAttribute('data-org'),
                 number: currentArrayPlace,
                 transition: this.options.defaultTransition
             });
@@ -228,25 +229,29 @@ var gallery = {
                 currentImg.source = this.galleryData[i].image;
                 currentImg.loaded = false;
                 currentImg.load = function(imageStyle, i) {
-                    if (!imageStyle.loaded)    {
+                    if (!imageStyle.loaded) {
                         this.galleryData[i].imgloader = new Asset.image(imageStyle.source, {
-                                    'onload'  : function(img, i){
-                                                    img.element.setStyle(
-                                                    'backgroundImage',
-                                                    "url('" + img.source + "')")
-                                                    img.loaded = true;
-                                                    img.width = this.galleryData[i].imgloader.width;
-                                                    img.height = this.galleryData[i].imgloader.height;
-                                                }.pass([imageStyle, i], this)
+                                    'onload'  : function(img, i) {
+                                        img.element.setAttribute('data-featherlight', this.galleryData[i].org)
+                                        img.element.setStyle(
+                                        'backgroundImage',
+                                        "url('" + img.source + "')")
+                                        img.loaded = true;
+                                        img.width = this.galleryData[i].imgloader.width;
+                                        img.height = this.galleryData[i].imgloader.height;
+                                    }.pass([imageStyle, i], this)
                         });
                     }
                 }.pass([currentImg, i], this);
             } else {
                 currentImg.element.setStyle('backgroundImage',
                                     "url('" + this.galleryData[i].image + "')");
+                currentImg.element.setAttribute('data-featherlight', this.galleryData[i].org);
             }
             this.galleryElements[parseInt(i)] = currentImg;
         }
+        jQuery('.slideElement').featherlightGallery({'openSpeed': 300});
+
     },
     destroySlideShow: function(element) {
         var myClassName = element.className;
